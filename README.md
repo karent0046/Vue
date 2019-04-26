@@ -147,8 +147,81 @@ v-bind 的简写形式：v-bind: 简化为 : ，上边的形式可以改写成�
 		});
 	</script>
   ```
+### 3.class绑定
 
+绑定DOM对象的class样式有以下几种形式：
 
+绑定多个class
 
+使用对象classObject绑定
 
- 
+使用数组classList绑定
+
+绑定的对象可以同时切换多个class
+
+对象和数组绑定的区别：
+
+对象可以控制class的添加和删除；数组不能控制删除
+
+案例:
+```
+<div id="app">
+			<div class="red green item">Vue</div>
+			<hr />
+			<div :class="{red:true,green:false,item:true}">Vue</div>
+			<div :class="classObj">Vue</div>
+			<div :class="classList">Vue</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var app = new Vue({
+			el:"#app",
+			data:{
+				classObj:{
+					red:true,
+					green:false,
+					item:true
+				},
+				classList:["red","item","test"]
+			}
+		});
+	</script>
+```
+### 4.style绑定
+
+style绑定
+
+绑定形式跟class一致：
+
+使用内联对象Object
+
+直接传入对象styleObject
+
+使用数组对象styleList
+
+案例:
+```
+<div id="app">
+			<div style="color:red;font-size: 30px;">我是文本</div>
+			<div :style="{'color':'red','font-size':'30px'}">我是文本</div>
+			<div :style="styleObj">我是文本</div>
+			<div :style="[styleObj,styleObj2]">我是文本</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var app = new Vue({
+			el:"#app",
+			data:{
+				styleObj:{
+					'color':'red',
+					'font-size':'30px',
+					'font-family':'楷体'
+				},
+				styleObj2:{
+					'background':'pink'
+				}
+			}
+		});
+	</script>
+```
+
