@@ -74,6 +74,32 @@ select > option
 
 解决上述问题，可以使用 is 进行标签转换，形式：
 
-< is=”my-component”>
+```< is=”my-component”>```
+
+案例:
+
+```
+<table id="app">
+ <!-- 使用组件 -->
+<!-- <my-component></my-component>-->
+ <!-- 使用 is -->
+ <tr is="my-component"></tr>
+</table>
+<script>
+ /***
+ * 原因是: table/ol/ul/select 这种特殊结构要求,不能使用自定义标签:
+ * 比如: table> tr> [th, td]; ol/ul > li; select > option
+ * 可以使用 is 进行标签转换
+ * */
+ /*定义组件 1*/
+ Vue.component('my-component',{
+ template:'<h4>我是自定义组件</h4>'
+ });
+ var app = new Vue({
+ el:'#app'
+ });
+</script>
+```
+
 
  
