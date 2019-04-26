@@ -10,16 +10,14 @@ Vue 自定义组件分为两种：全局注册和局部注册，全局组件可�
 注意：HTML 特性是不区分大小写的，所有在定义组件时尽量使用中划线“-”来指定组件名。
 即使，使用了驼峰标示命名如：myComponent，在页面引用时仍然要使用<my-component>进行引用。
 案例:
+	
 ```
 <div id="app">
-			<!--使用组件-->
-			<my-hello></my-hello>
+		<!--使用组件-->
+	<my-hello></my-hello>
 			
-		</div>
-		
-		
-	</body>
-	
+</div>
+</body>
 	<script type="text/javascript">
 		
 		new Vue({
