@@ -224,4 +224,33 @@ style绑定
 		});
 	</script>
 ```
+### 5.监听事件
+
+绑定事件
+
+语法：
+
+v-on:事件名
+
+简写：
+
+@事件名
+
+案例:
+```
+<div id="app">
+			count:{{count}} &nbsp;
+			<button v-on:click="count++">add</button>
+			<button @click="count--">down</button>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var app = new Vue({
+			el:"#app",
+			data:{
+				count:0
+			}
+		});
+	</script>
+```
 
