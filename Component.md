@@ -62,5 +62,18 @@ Vue 自定义组件分为两种：全局注册和局部注册，全局组件可�
  ```
  
  ### 3)is 属性
- 
+在 table 标签中直接使用自定义组件，无法正常显示。DOM 解析时会解析到<table>标签的外部：
+原因是：table/ol/ul/select 这种 html 标签有特殊的结构要求,不能直接使用自
+定义标签。他们有自己的默认嵌套规则，比如:
+	
+table> tr> [th, td];
+	
+ol/ul > li;
+
+select > option
+
+解决上述问题，可以使用 is 进行标签转换，形式：
+
+< is=”my-component”>
+
  
