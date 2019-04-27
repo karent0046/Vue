@@ -100,6 +100,18 @@ select > option
  });
 </script>
 ```
+### 4)模板
+
+当模板的html结构比较复杂时，直接在template属性中定义就不现实了，效率也会很低，此时我们可以使用模板，定义模板的四种形式:
+
+1)直接使用字符串定义
+
+2)使用<script type="text/x-template">
+	
+3)使用<template>标签
+	
+4)使用.vue组件，需要使用模块加载机制
+
+在使用直接字符串模板时、x-template和.vue组件时,不需要is进行转义。
 
 
- 
