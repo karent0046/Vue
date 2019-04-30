@@ -227,6 +227,12 @@ style绑定
 ```
 ### 5.监听事件
 
+指令 (Directives) 
+
+是带有 v- 前缀的特殊属性。
+
+指令的职责是，当表达式的值改变时，将其产生的连带影响，响应式地作用于 DOM。
+
 绑定事件
 
 语法：
@@ -254,4 +260,79 @@ v-on:事件名
 		});
 	</script>
 ```
+### 6.事件方法
 
+方法事件处理器
+
+一般来说事件会绑定一个方法，在方法内部处理相关的事件逻辑。
+
+需要在methods属性中定义方法，然后v-on引用对应相关的方法名。
+
+案例
+```
+<div id="app">
+			count:{{count}} &nbsp;
+			<button @click="addCount()">add</button>
+			<button @click="downCount">add</button>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var app = new Vue({
+			el:"#app",
+			data:{
+				count:0
+			},
+			methods:{
+				addCount:function(){
+					this.count++;
+				},
+				downCount:function(){
+					this.count--;
+				}
+			}
+		});
+		
+```
+
+### $event对象
+
+在事件处理函数中访问 DOM 原生事件 event 对象，可以使用特殊变量$event 对象传入。
+
+```
+<div id="app">
+			count:{{count}} &nbsp;
+			<button @click="addCount($event)">add</button>
+			<button @click="downCount">down</button>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var app = new Vue({
+			el:"#app",
+			data:{
+				count:0
+			},
+			methods:{
+				addCount:function(e){
+					console.log(e);
+					console.log(e.target.tagName);
+					this.count++;
+				},
+				downCount:function(){
+					this.count--;
+				}
+			}
+		});
+
+```
+
+### 7.事件修饰符
+
+在事件处理程序中调用 event.preventDefault()（阻止元素发生默认行为） 或 event.stopPropagation()（阻止事件冒泡到父元素） 是非常常见的需求。
+
+为了解决这个问题，Vue.js 为 v-on 提供了事件修饰符。通过由点 (.) 表示的指令后缀来调用修饰符。
+
+stop ： 阻止event冒泡，等效于event.stopPropagation()
+prevent ： 阻止event默认事件，等效于event.preventDefault()
+capture ： 事件在捕获阶段触发
+self ： 自身元素触发，而不是子元素触发
+once ： 事件只触发一次
