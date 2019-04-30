@@ -397,4 +397,45 @@ once ： 事件只触发一次
 		});
 
 ```
+### 9.键值修饰符
+
+键值修饰符
+在监听键盘事件时，我们经常需要监测常见的键值。Vue 允许为 v-on 在监听键盘事件时添加关键修饰符：
+.enter
+.tab
+.delete (捕获“删除”和“退格”键)
+.esc
+.space
+.up
+.down
+.left
+.right
+
+案例:
+
+```
+<div id="app">
+			<form action="http://www.shsxt.com">
+				<input v-on:keyup.enter="submit">
+				
+				<!-- 只有在 keyCode 是 13 时调用 submit() -->
+				<input v-on:keyup.13="enterKey">
+			</form>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var app = new Vue({
+			el:"#app",
+			data:{
+				
+			},
+			methods:{
+				enterKey:function(){
+					console.log("enter...");
+				}
+				
+			}
+			
+		});
+```
 
