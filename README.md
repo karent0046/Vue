@@ -294,7 +294,7 @@ v-on:事件名
 		
 ```
 
-### $event对象
+### 7.$event对象
 
 在事件处理函数中访问 DOM 原生事件 event 对象，可以使用特殊变量$event 对象传入。
 
@@ -325,7 +325,7 @@ v-on:事件名
 
 ```
 
-### 7.事件修饰符
+### 8.事件修饰符
 
 在事件处理程序中调用 event.preventDefault()（阻止元素发生默认行为） 或 event.stopPropagation()（阻止事件冒泡到父元素） 是非常常见的需求。
 
@@ -340,4 +340,61 @@ capture ： 事件在捕获阶段触发
 self ： 自身元素触发，而不是子元素触发
 
 once ： 事件只触发一次
+
+案例:
+
+```
+<div id="app">
+			<div @click="father">
+				<div @click="child">child</div>
+			</div>
+			<hr />
+			<!--stop ： 阻止event冒泡，等效于event.stopPropagation(-->
+			<div @click="father">
+				<div @click.stop="child">child</div>
+			</div>
+			<hr />
+			
+			<!--prevent ： 阻止event默认事件，等效于event.preventDefault()-->
+			<a href="http://www.baidu.com" @click.prevent="prevent1">百度</a>
+			<hr />
+			
+			<!--capture ： 事件在捕获阶段触发-->
+			<div @click.capture="father">
+				<div @click.capture="child">child</div>
+			</div>
+			
+			<!--self ： 自身元素触发，而不是子元素触发-->
+			<hr />
+			<div @click.self="father">
+				father
+				<div @click="child">child</div>
+			</div>
+			<hr />
+			
+			<!--once ： 事件只触发一次-->
+			<div @click.once="child">child</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var app = new Vue({
+			el:"#app",
+			data:{
+				
+			},
+			methods:{
+				father:function(){
+					console.log("父元素...");
+				},
+				child:function(){
+					console.log("子元素...");
+				},
+				prevent1:function(){
+					console.log("666....");
+				}
+			}
+			
+		});
+
+```
 
