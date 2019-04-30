@@ -332,7 +332,12 @@ v-on:事件名
 为了解决这个问题，Vue.js 为 v-on 提供了事件修饰符。通过由点 (.) 表示的指令后缀来调用修饰符。
 
 stop ： 阻止event冒泡，等效于event.stopPropagation()
+
 prevent ： 阻止event默认事件，等效于event.preventDefault()
+
 capture ： 事件在捕获阶段触发
+
 self ： 自身元素触发，而不是子元素触发
+
 once ： 事件只触发一次
+
