@@ -362,4 +362,245 @@ $emit主动触发: $emit(事件名,传入参数)
 			
 		});
 ```
+### 2)具名插槽
+
+具名插槽slot, 就是给插槽起个名字。
+
+在子组件定时可以定定义多个<slot>插槽,同时通过name属性指定一个名字,如:<slot name='header'>，父组件引用时使用< slot='header'>进行插槽选择。
+	
+案例:
+
+```
+<div id="app">
+			<!--<my-hello></my-hello>-->
+			<my-hello>
+				<h3 slot="header">你好</h3>
+				<p slot="footer">这是p元素</p>
+			</my-hello>
+		</div>
+		
+		<!--使用template标签-->
+		<template id="tpl1">
+			<div>
+				<slot name="header">如果没有传递数据，默认显示这段文本</slot>
+				<div>--------------------</div>
+				<!--插槽，占位-->
+				<slot name="footer">如果没有传递数据，默认显示这段文本</slot>
+			</div>
+		</template>
+		
+	</body>
+	
+	<script type="text/javascript">
+		
+		// 自定义组件
+		Vue.component("my-hello",{
+			template:"#tpl1",
+		});
+		
+		
+		var app = new Vue({
+			el:"#app"
+			
+		});
+		
+	</script>
+```
+### 3)作用域插槽
+
+作用域插槽slot-scope
+
+父组件通过<slot>插槽混入父组件的内容, 子组件也可以通过slot作用域向插槽slot内部传入数据，使用方式:<slot text='子组件数据'>
+	
+父组件通过<template slot-scope="props">进行引用。
+
+案例1:
+```
+	<!--<my-hello></my-hello>-->
+			<my-hello>
+				<template slot-scope="props">
+					<h3>你好----{{props.msg}}----{{props.txt}}</h3>
+				</template>
+			</my-hello>
+		</div>
+		
+		<!--使用template标签-->
+		<template id="tpl1">
+			<div>
+				<div>--------------------</div>
+				<!--插槽，占位-->
+				<slot msg="你好啊" txt="Hello">如果没有传递数据，默认显示这段文本</slot>
+			</div>
+		</template>
+		
+	</body>
+	
+	<script type="text/javascript">
+		
+		// 自定义组件
+		Vue.component("my-hello",{
+			template:"#tpl1",
+		});
+		
+		
+		var app = new Vue({
+			el:"#app"
+			
+		});
+		
+	</script>
+```
+案例2:
+```
+<div id="app">
+			<!--<my-hello></my-hello>-->
+			<my-hello>
+				<h3 slot-scope="{msg,txt}">你好----{{msg}}----{{txt}}</h3>
+			</my-hello>
+		</div>
+		
+		<!--使用template标签-->
+		<template id="tpl1">
+			<div>
+				<div>--------------------</div>
+				<!--插槽，占位-->
+				<slot msg="你好啊" txt="Hello">如果没有传递数据，默认显示这段文本</slot>
+			</div>
+		</template>
+		
+	</body>
+	
+	<script type="text/javascript">
+		
+		// 自定义组件
+		Vue.component("my-hello",{
+			template:"#tpl1",
+		});
+		
+		
+		var app = new Vue({
+			el:"#app"
+			
+		});
+		
+	</script>
+```
+## 4.动态组件
+
+使用<component>标签的is属性,动态绑定多个组件到一个挂载点,通过改变is绑定值,切换组件。
+
+案例:
+```
+<div id="app">
+			<!--3、指定导航-->
+			/ <a href='#' @click.prevent="page='index'">首页</a>
+			/ <a href='#' @click.prevent="page='news'">新闻</a>
+			/ <a href='#' @click.prevent="page='login'">登陆</a>
+			
+			<!--2、使用component引用-->
+			<component :is="page"> </component>
+		</div>
+	</body>
+	
+	<script type="text/javascript">
+		// 1、定义组件
+		Vue.component('index', {
+		    template:'<h5>首页</h5>'
+		});
+		Vue.component('news', {
+		    template:'<h5>新闻页</h5>'
+		});
+		Vue.component('login', {
+		    template:'<h5>登陆页</h5>'
+		});
+		
+		new Vue({
+			el:"#app",
+			data:{
+	            page:'index'
+	        }
+		});
+	</script>
+```
+### 1)keep-alive
+
+如果把切换出去的组件保留在内存中，可以保留它的状态或避免重新渲染。为此可以添加一个 keep-alive 指令。
+
+案例:
+
+```
+<div id="app">
+			<!--3、指定导航-->
+			/ <a href='#' @click.prevent="page='index'">首页</a>
+			/ <a href='#' @click.prevent="page='news'">新闻</a>
+			/ <a href='#' @click.prevent="page='login'">登陆</a>
+			
+			<!--2、使用component引用-->
+			<keep-alive>
+		        <component :is="page"></component>
+		    </keep-alive>
+		</div>
+	</body>
+	
+	<script type="text/javascript">
+		// 1、定义组件
+		Vue.component('index', {
+		    template:'<h5>首页</h5>',
+		    // 当组件挂载时，触发（钩子函数）
+		    mounted: function () {
+		        console.log('挂载...首页');
+		    }
+		});
+		Vue.component('news', {
+		    template:'<h5>新闻页</h5>',
+		    mounted: function () {
+		        console.log('挂载...新闻页');
+		    }
+		});
+		Vue.component('login', {
+		    template:'<h5>登陆页</h5>',
+		    mounted: function () {
+		        console.log('挂载...登陆页');
+		    }
+		});
+		
+		new Vue({
+			el:"#app",
+			data:{
+	            page:'index'
+	        }
+		});
+	</script>
+	
+```
+### 2)refs
+
+使用ref 给每个组件起一个固定的名字,方便后续直接引用操作，在父组件中使用$refs访问子组件。
+
+案例:
+
+```
+	<div id="app">
+			<index ref="ind"></index>
+		</div>
+	</body>
+	
+	<script type="text/javascript">
+		// 1、定义组件
+		Vue.component('index', {
+		    template:'<div>{{count}}</div>',
+		   	data:function(){
+		   		return {count:0};
+		   	}
+		});
+		
+		
+		var app = new Vue({
+			el:"#app",
+		});
+		
+		// 通过refs属性得到指定的自定义组件，修改对应的组件中的值
+		app.$refs.ind.count=10;
+	</script>
+```
 
