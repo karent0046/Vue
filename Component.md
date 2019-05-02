@@ -114,4 +114,107 @@ select > option
 
 在使用直接字符串模板时、x-template和.vue组件时,不需要is进行转义。
 
+### 5)data属性
+
+通过 data 属性指定自定义组件的初始数据，要求 data 必须是一个函数，如果不是函数就会报错。
+
+案例:
+```
+<script type="text/javascript">
+		/*定义组件需要在实例化vue之前*/
+		Vue.component("my-hello",{
+			template:"<button @click='count++'>按钮{{count}}</button>",
+			// 定义组件内部data: 必须通过函数定义
+			data:function(){
+				return {count:0};
+			}
+		});
+		
+		
+		new Vue({
+			el:"#app",
+			data:{
+				
+			}
+		});
+		
+	</script>
+```
+
+### 6)Props属性
+
+组件可以嵌套使用，叫做父子组件。那么父组件经常要给子组件传递数据这叫做父子组件通信。
+
+父子组件的关系可以总结为 props 向下传递，事件向上传递。
+
+父组件通过 props 给子组件下发数据，子组件通过事件给父组件发送消息。
+				
+1、在父组件中定义数据
+
+2、在使用组件时，绑定父组件中的数据
+
+3、在子组件中通过props属性声明父组件中传递过来的参数
+
+4、在template属性中使用父组件中的参数
+
+案例:
+```
+<script type="text/javascript">
+		/*定义组件需要在实例化vue之前*/
+		Vue.component("my-hello",{
+			// 声明父组件传递过来的参数
+			props:["txt1","txt2"],
+			template:"<div>{{txt1}}：{{txt2}}</div>"
+		});
+		
+		
+		new Vue({
+			el:"#app",
+			data:{
+				msg:"来自系统的消息",
+				txt:"Hello Vue!"
+			}
+		});
+		
+	</script>
+```
+### 7)props校验
+
+子组件在接收父组件传入数据时, 可以进行props校验，来确保数据的格式和是否必传。可以指定一下属性：
+
+1) type: 指定数据类型 String Number Object ...注意不能使用字符串数组，只能是对象大写形式
+
+2) required: 指定是否必必须输入
+
+3) default: 给默认值或者自定义函数返回默认值
+
+4) validator: 自定义函数校验	
+
+注意:
+**非props属性:引用子组件时，非定义的props属性,自动合并到子组件上,class和style也会自动合并。**
+
+案例
+```
+<div id="app">
+			<!--使用组件-->
+			<my-hello class="item" style="font-size: 30px;color:pink;"  ></my-hello>
+		</div>
+		
+		
+	</body>
+	
+	<script type="text/javascript">
+		/*定义组件需要在实例化vue之前*/
+		Vue.component("my-hello",{
+			template:"<span class='test' style='color:red'>Vue</span>"
+		});
+		
+		
+		new Vue({
+			el:"#app"
+			
+		});
+```
+
+
 
