@@ -190,8 +190,6 @@ select > option
 
 4) validator: 自定义函数校验	
 
-注意:
-**非props属性:引用子组件时，非定义的props属性,自动合并到子组件上,class和style也会自动合并。**
 
 案例
 ```
@@ -216,5 +214,152 @@ select > option
 		});
 ```
 
+注意:
+**非props属性:引用子组件时，非定义的props属性,自动合并到子组件上,class和style也会自动合并。**
 
+案例:
+
+```
+<script type="text/javascript">
+		/*定义组件需要在实例化vue之前*/
+		Vue.component("my-hello",{
+			// 声明父组件传递过来的参数
+			// props:["txt1","txt2"], // 数组不能做校验
+			// 对象可以做校验
+			props:{
+				// 基础类型检测 (`null` 指允许任何类型)
+				txt1:[String, Number], // 可以支持多个
+				txt2:String,
+				// 必传且是字符串
+				txt3:{
+					required:true,
+					type:String
+				},
+				// 数值且有默认值
+				txt4:{
+					type:Number,
+					default: 100
+				},
+				// 自定义验证函数
+				txt5:{
+					validator:function(value){
+						return value > 10;
+					}
+				}
+			},
+			template:"<div>{{txt1}}：{{txt2}}---{{txt3}}---{{txt4}}----{{txt5}}</div>"
+		});
+		
+		
+		new Vue({
+			el:"#app",
+			data:{
+				msg:"来自系统的消息",
+				txt:"Hello Vue!",
+				msg2:"Admin",
+				num:10,
+				money:19
+			}
+		});
+		
+	</script>
+```
+
+## 2.自定义事件
+
+父组件给子组件传值使用props属性, 那么需要子组件更新父组件时,要使用自定义事件$on和$emit：
+
+$on监听: 不能监听驼峰标示的自定义事件, 使用全部小写(abc)或者-(a-b-c)
+
+$emit主动触发: $emit(事件名,传入参数)
+
+主动挂载
+自定义事件不仅可以绑定在子组件，也可以直接挂载到父组件，使用$on绑定和$emit触发。
+
+```
+<div id="app">
+			<my-hello v-on:update-count="changecount()"></my-hello>
+			{{count}}
+		</div>
+		
+		
+	</body>
+	
+	<script type="text/javascript">
+		
+		Vue.component("my-hello",{
+			template:"<button v-on:click='update'>子组件Child</button>",
+			methods:{
+				update:function(){
+					console.log("点击...");
+					this.$emit("update-count","自定义事件");
+				}
+			}
+		});
+		
+		
+		var app = new Vue({
+			el:"#app",
+			data:{
+				count:0
+			},
+			methods:{
+				changecount:function(){
+					this.count++;
+				}
+			}
+		});
+		// 主动挂载自定义事件
+		app.$on("update-count",function(value){
+			console.log(value);
+			this.count++;
+		});
+		// 触发自定义事件
+		app.$emit("update-count","这是自定义事件");
+		
+	</script>
+```
+
+## 3.插槽分发
+
+### 1)slot插槽
+
+父子组件使用时,有时需要将父元素的模板跟子元素模板进行混合,这时就要用到slot 插槽进行内容分发.
+
+简单理解就是在子模板中先占个位置<slot>等待父组件调用时进行模板插入。
+
+案例:
+```
+		<div id="app">
+			<my-hello></my-hello>
+			<my-hello>
+				<h3>你好</h3>
+				<p>这是p元素</p>
+			</my-hello>
+		</div>
+		
+		<!--使用template标签-->
+		<template id="tpl1">
+			<div>
+				<h4>Hello Vue</h4>	
+				<!--插槽，占位-->
+				<slot>如果没有传递数据，默认显示这段文本</slot>
+			</div>
+		</template>
+		
+	</body>
+	
+	<script type="text/javascript">
+		
+		// 自定义组件
+		Vue.component("my-hello",{
+			template:"#tpl1",
+		});
+		
+		
+		var app = new Vue({
+			el:"#app"
+			
+		});
+```
 
